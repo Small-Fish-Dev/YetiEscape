@@ -15,10 +15,16 @@ partial class SwimmingPlayer : AnimatedEntity
 
 		Vector3 direction = new Vector3( Input.Forward, Input.Left, 0 ).Normal;
 
-		Velocity = Vector3.Lerp( Velocity, direction, Time.Delta * 50f );
-		Rotation = Rotation.Lerp( Rotation, Rotation.FromYaw( direction.EulerAngles.yaw ), Time.Delta * 50f );
+		Velocity = Vector3.Lerp( Velocity, direction, Time.Delta * 10f );
 
-		Position += direction * 100f * Time.Delta;
+		if ( Velocity.Length > 0 )
+		{
+
+			Rotation = Rotation.Lerp( Rotation, Rotation.FromYaw( Velocity.EulerAngles.yaw ), Time.Delta * 10f );
+
+		}
+
+		Position += Velocity * 100f * Time.Delta;
 
 	}
 
