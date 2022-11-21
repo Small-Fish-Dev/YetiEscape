@@ -13,9 +13,12 @@ partial class SwimmingPlayer : AnimatedEntity
 	public override void Simulate( Client cl )
 	{
 
-		Vector3 direction = new Vector3( Input.Forward, Input.Left, 0 ).Normal;
+		// MOVEMENT //
 
-		Velocity = Vector3.Lerp( Velocity, direction, Time.Delta * 10f );
+		Vector3 direction = new Vector3( Input.Forward, Input.Left, 0 ).Normal;
+		Vector3 wishSpeed = direction * 100f;
+		
+		Velocity = Vector3.Lerp( Velocity, wishSpeed, Time.Delta * 10f );
 
 		if ( Velocity.Length > 0 )
 		{
@@ -24,7 +27,13 @@ partial class SwimmingPlayer : AnimatedEntity
 
 		}
 
-		Position += Velocity * 100f * Time.Delta;
+		Position += Velocity * Time.Delta;
+
+		// ANIMATION //
+
+		var animationHelper = new CitizenAnimationHelper( this );
+		animationHelper.WithVelocity( wishSpeed );
+		animationHelper.IsSwimming = true;
 
 	}
 
