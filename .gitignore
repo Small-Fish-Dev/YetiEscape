@@ -1,0 +1,14 @@
+
+*.v2
+*.vsidx
+*.lock
+code/.vs/yetigametest/v17/.suo
+code/obj/Debug/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
+code/obj/Debug/yetigametest.AssemblyInfo.cs
+*.cache
+*.editorconfig
+code/obj/Debug/yetigametest.GlobalUsings.g.cs
+*.json
+*.props
+*.targets
+code/yetigametest.csproj
