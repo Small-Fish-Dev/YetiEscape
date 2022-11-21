@@ -3,7 +3,7 @@
   "Type": "game",
   "Org": "local",
   "Ident": "yetigametest",
-  "Tags": null,
+  "Tags": "",
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
@@ -15,9 +15,9 @@
     "MaxPlayers": 64,
     "MinPlayers": 1,
     "GameNetworkType": "Multiplayer",
-    "MapSelect": "Unrestricted",
+    "MapSelect": "Hidden",
     "MapList": [
-      "facepunch.flatgrass"
+      "lake"
     ],
     "RankType": "None",
     "PerMapRanking": false,
