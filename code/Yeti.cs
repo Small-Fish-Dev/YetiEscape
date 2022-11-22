@@ -22,7 +22,12 @@ partial class Yeti : AnimatedEntity
 
 		if ( Target == null ) return;
 
+		EnableDrawing = true;
+
 		// MOVEMENT //
+
+		Vector3 wishPosition = Target.Position.WithZ( 0 ).Normal * 512f; // Basically treats the player's position as a directional vector with the world's origin as the start
+		Position = wishPosition;
 		
 
 		// ANIMATION //
