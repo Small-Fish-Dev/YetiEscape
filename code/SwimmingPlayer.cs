@@ -16,7 +16,7 @@ partial class SwimmingPlayer : AnimatedEntity
 		// MOVEMENT //
 
 		Vector3 direction = new Vector3( Input.Forward, Input.Left, 0 ).Normal;
-		Vector3 wishSpeed = direction * 100f;
+		Vector3 wishSpeed = direction * 150f;
 		
 		Velocity = Vector3.Lerp( Velocity, wishSpeed, Time.Delta * 10f );
 
