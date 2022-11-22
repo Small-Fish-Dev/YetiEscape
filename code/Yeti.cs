@@ -26,8 +26,10 @@ partial class Yeti : AnimatedEntity
 
 		// MOVEMENT //
 
-		Vector3 wishPosition = Target.Position.WithZ( 0 ).Normal * 512f; // Basically treats the player's position as a directional vector with the world's origin as the start
-		Position = wishPosition;
+		var victimPos = Target.Position.WithZ( 0f ).Normal;
+		var wishAngle = Math.Atan2( victimPos.y, victimPos.x );
+
+		Position = Rotation.FromYaw( MathX.RadianToDegree( (float)wishAngle ) ).Forward * 512f;
 		
 
 		// ANIMATION //
