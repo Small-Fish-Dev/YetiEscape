@@ -24,6 +24,8 @@ public partial class YetiEscape : Sandbox.Game
 
 		pawn.Position = Entity.All.OfType<SpawnPoint>().FirstOrDefault().Position;
 
+		new Yeti() { Target = pawn };
+
 	}
 
 }

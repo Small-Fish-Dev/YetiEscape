@@ -2,22 +2,25 @@
 
 namespace YetiGame;
 
-[HammerEntity]
-[EditorModel( "models/citizen/citizen.vmdl" )]
 partial class Yeti : AnimatedEntity
 {
+
+	public SwimmingPlayer Target { get; set; }
 
 	public override void Spawn()
 	{
 
 		SetModel( "models/citizen/citizen.vmdl" );
 		Scale = 1.5f;
+		EnableDrawing = false;
 
 	}
 
-	[Event.Tick]
+	[Event.Tick.Server]
 	public void ComputeAI()
 	{
+
+		if ( Target == null ) return;
 
 		// MOVEMENT //
 		
