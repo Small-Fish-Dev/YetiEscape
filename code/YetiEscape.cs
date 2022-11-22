@@ -21,6 +21,8 @@ public partial class YetiEscape : Sandbox.Game
 
 		var pawn = new SwimmingPlayer();
 		client.Pawn = pawn;
+		pawn.Clothing.LoadFromClient( client );
+		pawn.Clothing.DressEntity( pawn );
 
 		pawn.Position = Entity.All.OfType<SpawnPoint>().FirstOrDefault().Position;
 

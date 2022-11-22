@@ -3,6 +3,8 @@
 partial class SwimmingPlayer : AnimatedEntity
 {
 
+	public ClothingContainer Clothing = new();
+
 	public override void Spawn()
 	{
 
