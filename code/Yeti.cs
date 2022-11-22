@@ -34,13 +34,24 @@ partial class Yeti : AnimatedEntity
 		float distance = Math.Max( currentRotation.Distance( wishRotation ), 1f ); // We don't want to divide under 1
 		Rotation normalDirection = difference / distance;
 
-		currentRotation *= difference / distance * Time.Delta * 50f;
+		currentRotation *= normalDirection * 50f * Time.Delta;
+		Vector3 wishPosition = currentRotation.Forward * 512f;
 
-		Position = currentRotation.Forward * 512f;
+		Velocity = wishPosition - Position;
+
+		if ( Velocity.Length > 0 )
+		{
+
+			Rotation = Rotation.Lerp( Rotation, Rotation.LookAt( Velocity ), Time.Delta * 10f );
+
+		}
+
+		Position += Velocity;
 
 		// ANIMATION //
 
 		var animationHelper = new CitizenAnimationHelper( this );
+		animationHelper.WithVelocity( Velocity / Time.Delta );
 
 	}
 
