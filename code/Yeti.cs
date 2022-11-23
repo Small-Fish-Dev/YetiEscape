@@ -12,8 +12,10 @@ partial class Yeti : AnimatedEntity
 	{
 
 		SetModel( "models/citizen/citizen.vmdl" );
-		Scale = 1.5f;
 		EnableDrawing = false;
+		var kongCostume = new AnimatedEntity( "models/kong/kong.vmdl" );
+		kongCostume.SetParent( this, true );
+		Scale = 1.5f;
 		Position = Vector3.Forward * 512f;
 
 	}
@@ -23,8 +25,6 @@ partial class Yeti : AnimatedEntity
 	{
 
 		if ( Target == null ) return;
-
-		EnableDrawing = true;
 
 		// MOVEMENT //
 
