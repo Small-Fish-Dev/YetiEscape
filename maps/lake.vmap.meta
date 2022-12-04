@@ -2,5 +2,6 @@
   "cloud_packages": [
     "garry.before_pinetree#1049"
   ],
-  "game_packages": []
+  "game_packages": [],
+  "addon_packages": []
 }
