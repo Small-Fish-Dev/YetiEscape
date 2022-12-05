@@ -4,6 +4,8 @@ partial class SwimmingPlayer : AnimatedEntity
 {
 
 	public ClothingContainer Clothing = new();
+	public float Speed = 200f;
+	[ClientInput] public Vector3 InputDirection { get; set; }
 
 	public override void Spawn()
 	{
@@ -17,9 +19,10 @@ partial class SwimmingPlayer : AnimatedEntity
 
 		// MOVEMENT //
 
-		Vector3 direction = new Vector3( Input.Forward, Input.Left, 0 ).Normal;
-		Vector3 wishSpeed = direction * 150f;
-		
+		Vector3 direction = new Vector3( InputDirection.x, InputDirection.y, 0 ).Normal;
+		Vector3 wishSpeed = direction * Speed;
+
+		Log.Info( $"{Host.Name} - {direction}" );
 		Velocity = Vector3.Lerp( Velocity, wishSpeed, Time.Delta * 10f );
 
 		if ( Velocity.Length > 0 )
@@ -34,7 +37,7 @@ partial class SwimmingPlayer : AnimatedEntity
 		// ANIMATION //
 
 		var animationHelper = new CitizenAnimationHelper( this );
-		animationHelper.WithVelocity( wishSpeed );
+		animationHelper.WithVelocity( Velocity );
 		animationHelper.IsSwimming = true;
 
 	}
@@ -45,6 +48,11 @@ partial class SwimmingPlayer : AnimatedEntity
 		setup.Position = Vector3.Up * 800f;
 		setup.Rotation = Rotation.FromPitch( 90f );
 
+	}
+
+	public override void BuildInput()
+	{
+		InputDirection = Input.AnalogMove;
 	}
 
 }

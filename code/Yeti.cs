@@ -4,15 +4,15 @@ partial class Yeti : AnimatedEntity
 {
 
 	public SwimmingPlayer Target;	// This is who the Yeti will follow, we'll set it once a player joins
-	public float SpeedRatio => 4f;	// How faster the Yeti is compared to the player, anything above PI will make it fast enough to catch up anywhere
-	public float Radius => 512f;	// How big the Lake is, the Yeti will follow the circumference of an imaginary circle around it
+	public float SpeedRatio = 4f;	// How faster the Yeti is compared to the player, anything above PI will make it fast enough to catch up anywhere
+	public float Radius = 512f;	// How big the Lake is, the Yeti will follow the circumference of an imaginary circle around it
 
 	public override void Spawn() // AnimatedEntity has a default method called Spawn(), which runs on the Server once the Yeti has been created, we can override it to run our code
 	{
 
 		SetModel( "models/citizen/citizen.vmdl" );	// Default citizen model
 		Scale = 1.5f;								// Make the Yeti bigger!
-		Position = Vector3.Forward * 512f;			// Set the starting position somewhere around the lake
+		Position = Vector3.Forward * Radius;			// Set the starting position somewhere around the lake
 		EnableDrawing = false;						// We'll "Dress" our citizen as a Yeti, so hide the model, this is usually handled by the clothing asset but we're not using that
 
 		var kongCostume = new AnimatedEntity( "models/kong/kong.vmdl" );	// Create the costume
