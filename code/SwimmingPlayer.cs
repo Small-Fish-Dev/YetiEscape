@@ -35,7 +35,7 @@ public partial class SwimmingPlayer : AnimatedEntity
 		Position += Velocity;	// Update the Position using the player's velocity
 
 		if ( !Velocity.IsNearlyZero( 0.1f ) ) // Don't run this code if the Yeti is basically standing still
-			Rotation = Rotation.Lerp( Rotation, Rotation.LookAt( Velocity ), Time.Delta * 10f ); // Rotate the player towards it's Velocity's direction, but smoothly
+			Rotation = Rotation.Lerp( Rotation, Rotation.LookAt( Velocity, Vector3.Up ), Time.Delta * 10f ); // Rotate the player towards it's Velocity's direction, but smoothly
 
 		// ANIMATION //
 
