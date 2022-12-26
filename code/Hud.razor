@@ -23,17 +23,18 @@
 
 <root>
     <panel class="gameState">
-        @player.GameText
+        @player.GameText        <!--We are able to run C# code and call variables using the "at" sign-->
     </panel>
 </root>
 
-@code {
-    SwimmingPlayer player => Game.LocalPawn as SwimmingPlayer;
 
-    protected override int BuildHash()
+@code { // Code that is being run by our root panel, Hud
+    SwimmingPlayer player => Game.LocalPawn as SwimmingPlayer; // Whenever we try to access the variable "player" it will return the current client's pawn and type matches it as our player class
+
+    protected override int BuildHash() // BuildHash() is needed if we want to update out UI, we pass a variable which can be observed for any changes
     {
 
-        return player.GameText.GetHashCode();
+        return player.GameText.GetHashCode();   // When passing a variable we want to observe, we use its HashCode which is an integer that we KNOW is always different whenever the variable is altered
 
     }
 }

@@ -1,5 +1,5 @@
 {
-  "Title": "yetigametest",
+  "Title": "Yeti Escape",
   "Type": "game",
   "Org": "fish",
   "Ident": "yetigametest",
@@ -24,6 +24,6 @@
     "ProjectTemplate": null,
     "Summary": "",
     "Description": "",
-    "Public": false
+    "Public": true
   }
 }

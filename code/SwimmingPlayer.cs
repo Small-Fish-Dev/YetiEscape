@@ -29,6 +29,9 @@ public partial class SwimmingPlayer : AnimatedEntity
 	public override void Simulate( IClient client ) // This is called once every tick, both for client and server. Only entities that have been assigned to a Client's pawn have this
 	{
 
+		float distanceFromCenter = Position.Length;	// Since the center of the lake is 0, 0, 0 we can use the magnitude of our player's position as the distance from the center
+		bool isOutOfLake = distanceFromCenter > YetiEscape.Radius;  // Compare the distance from the center to the lake's radius
+
 		// MOVEMENT //
 
 		Vector3 direction = new Vector3( InputDirection.x, InputDirection.y, 0 ).Normal; // Which direction the player is moving to, we normalize it or else the player moves faster diagonally
@@ -42,10 +45,14 @@ public partial class SwimmingPlayer : AnimatedEntity
 
 		// ANIMATION //
 
-		var animationHelper = new CitizenAnimationHelper( this );				// CitizenAnimationHelper is useful when handling a Citizen's animations, it sets all the Animation Parameters for us
-		animationHelper.WithVelocity( Velocity / Time.Delta );					// The running animation velocity is in UnitsPerSecond and not UnitsPerTick, so we divide by Time.Delta
-		float distanceFromCenter = Position.Length;								// Since the center of the lake is 0, 0, 0 we can use the magnitude of our player's position as the distance from the center
-		animationHelper.IsSwimming = distanceFromCenter < YetiEscape.Radius;	// If the player is still inside of the lake, then we use the swimming animations
+		var animationHelper = new CitizenAnimationHelper( this );	// CitizenAnimationHelper is useful when handling a Citizen's animations, it sets all the Animation Parameters for us
+		animationHelper.WithVelocity( Velocity / Time.Delta );		// The running animation velocity is in UnitsPerSecond and not UnitsPerTick, so we divide by Time.Delta
+		animationHelper.IsSwimming = !isOutOfLake;					// If the player is still inside of the lake, then we use the swimming animations
+
+		// GAMEPLAY //
+
+		if ( isOutOfLake )		// If the player is out of the lake...
+			YetiEscape.DisplayText( Client, "YOU WIN" );	// Display the winning text :-)
 
 		if ( Game.IsServer ) return;	// The code below won't run on the server
 
@@ -53,7 +60,7 @@ public partial class SwimmingPlayer : AnimatedEntity
 
 		Camera.Position = Vector3.Up * 1000f;			// Place the game's camera in the sky
 		Camera.Rotation = Rotation.FromPitch( 90f );    // Rotate the game's camera downwards
-		Camera.FieldOfView = 100f;
+		Camera.FieldOfView = 100f;						// Change the FOV so it's the same for everyone
 
 	}
 

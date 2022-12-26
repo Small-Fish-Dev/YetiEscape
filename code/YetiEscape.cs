@@ -42,18 +42,23 @@ public partial class YetiEscape : GameManager // To create a game, we have make 
 
 	}
 
-	public static void DisplayText( IClient client, string text )
+	public static void DisplayText( IClient client, string text ) // Static method to display a text on the client, we can access it with YetiEscape.DisplayText
 	{
 
-		if ( client.Pawn is not SwimmingPlayer player ) return;
+		if ( client.Pawn is not SwimmingPlayer player ) return;		// Check if the client has a pawn assigned and also typematch it to our player class
 
-		player.GameText = text;
+		player.GameText = text;     // Set the player's GameText to what we passed, displaying it on the middle of the screen
+		DelayTextReset( client );	// After 1 second, hide the text
+	}
 
-		GameTask.RunInThreadAsync( async () =>
-		{
-			await GameTask.DelaySeconds( 1f );
-			player.GameText = "";
-		} );
+	static async void DelayTextReset( IClient client ) // async methods are able to run on another CPU thread, so you can multitask
+	{
+		await GameTask.DelaySeconds( 1f ); // await keyword won't run the code below until a condition has been met, in DelaySeconds( 1f ) case it's to wait 1 second
+
+		if ( client.Pawn is not SwimmingPlayer player ) return;     // Check and typematch again, it might've changed in the past second
+
+		player.GameText = "";	// Set the text to nothing
+
 	}
 
 }
