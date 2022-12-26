@@ -3,19 +3,19 @@
 public partial class SwimmingPlayer : AnimatedEntity
 {
 
-	public Yeti Yeti;
-	public float Speed = 200f;
-	[ClientInput] public Vector3 InputDirection { get; set; }
+	public Yeti Yeti;			// Each player needs a Yeti assigned so they can be hunted, we don't create it now though
+	public float Speed = 200f;	// How fast the player is moving, UnitsPerSecond so 200f means they will move at 200 units each second
+	[ClientInput] public Vector3 InputDirection { get; set; }	// [ClientInput] attribute gives the client authority over this property and network it, the server will replicate it instead
 
-	public override void Spawn()
+	public override void Spawn() // AnimatedEntity has a default method called Spawn(), which runs on the Server once the player has been created, we can override it to run our code
 	{
 
-		SetModel( "models/citizen/citizen.vmdl" );
+		SetModel( "models/citizen/citizen.vmdl" );  // Default citizen model
 		Yeti = new Yeti { Target = this };			// Spawn a Yeti and assign its target to this player
 
 	}
 
-	protected override void OnDestroy()
+	protected override void OnDestroy() // AnimatedEntity has a default method called OnDestroy(), which runs once the player has been deleted, we can override it to run our code
 	{
 
 		if ( Game.IsServer )	// Do nothing if this is being run on the client, the server should always handle these entities
@@ -44,18 +44,18 @@ public partial class SwimmingPlayer : AnimatedEntity
 		float distanceFromCenter = Position.Length;								// Since the center of the lake is 0, 0, 0 we can use the magnitude of our player's position as the distance from the center
 		animationHelper.IsSwimming = distanceFromCenter < YetiEscape.Radius;	// If the player is still inside of the lake, then we use the swimming animations
 
-		if ( Game.IsServer ) return;
+		if ( Game.IsServer ) return;	// The code below won't run on the server
 
 		// CAMERA //
 
-		Camera.Position = Vector3.Up * 1000f;
-		Camera.Rotation = Rotation.FromPitch( 90f );
+		Camera.Position = Vector3.Up * 1000f;			// Place the game's camera in the sky
+		Camera.Rotation = Rotation.FromPitch( 90f );	// Rotate the game's camera downwards
 
 	}
 
-	public override void BuildInput()
+	public override void BuildInput()	// This is called once every frame for the client for us to access and modify inputs. Only entities that have been assigned to a Client's pawn have this
 	{
-		InputDirection = Input.AnalogMove;
+		InputDirection = Input.AnalogMove;	// Our InputDirection is set to Input.AnalogMove, which is the resulting direction from WASD or a controller's stick
 	}
 
 }
