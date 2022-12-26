@@ -1,0 +1,39 @@
+﻿@using Sandbox.UI
+@namespace YetiEscape
+@inherits RootPanel     // This inherits both Panel and RootPanel
+
+<style>
+    /*Our rootpanel element name is the same as the file name, in our case it's Hud (Hud.razor). We are also able to access all elements with C# code through partial classes bearing the same name*/
+    Hud {
+        width: 100%;            /*Make sure our root panel is as big as the whole screen*/
+        height: 100%;
+        pointer-events: all;    /*Show our cursor*/
+    }
+    /*Create a class with the following style, we will use this to display text*/
+    .gameState {
+        position: absolute; /*The position is independent, other elements won't be able to interact with it*/
+        top: 50%;           /*Vertical position is the middle of the screen*/     
+        left: 50%;          /*Horizontal position is the middle of the screen*/
+        transform: translate(-50% -50%);        /*Center the text, this shifts to the top-left corner by 50%*/
+        font-size: 100px;                       /*Size of the text*/
+        text-shadow: 0px 10px 0px black;      /*Black shadow being cast by the text, shifted down by 10 pixels*/
+        color: white;   /*Color of the text*/
+    }
+</style>
+
+<root>
+    <panel class="gameState">
+        @player.GameText
+    </panel>
+</root>
+
+@code {
+    SwimmingPlayer player => Game.LocalPawn as SwimmingPlayer;
+
+    protected override int BuildHash()
+    {
+
+        return player.GameText.GetHashCode();
+
+    }
+}

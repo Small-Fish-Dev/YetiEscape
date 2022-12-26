@@ -1,4 +1,4 @@
-﻿namespace YetiGame;
+﻿namespace YetiEscape;
 
 public partial class SwimmingPlayer : AnimatedEntity
 {
@@ -6,6 +6,9 @@ public partial class SwimmingPlayer : AnimatedEntity
 	public Yeti Yeti;			// Each player needs a Yeti assigned so they can be hunted, we don't create it now though
 	public float Speed = 200f;	// How fast the player is moving, UnitsPerSecond so 200f means they will move at 200 units each second
 	[ClientInput] public Vector3 InputDirection { get; set; }	// [ClientInput] attribute gives the client authority over this property and network it, the server will replicate it instead
+
+	// The [Net] attribute lets use network properties from the server to the client, since we are handling gameplay on the server but our HUD is on the client
+	[Net] public string GameText { get; set; } = "";		// The HUD will follow this variable and display whatever we set it to on the screen
 
 	public override void Spawn() // AnimatedEntity has a default method called Spawn(), which runs on the Server once the player has been created, we can override it to run our code
 	{
@@ -49,7 +52,7 @@ public partial class SwimmingPlayer : AnimatedEntity
 		// CAMERA //
 
 		Camera.Position = Vector3.Up * 1000f;			// Place the game's camera in the sky
-		Camera.Rotation = Rotation.FromPitch( 90f );	// Rotate the game's camera downwards
+		Camera.Rotation = Rotation.FromPitch( 90f );    // Rotate the game's camera downwards
 
 	}
 

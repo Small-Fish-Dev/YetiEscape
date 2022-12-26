@@ -1,13 +1,21 @@
 ﻿global using Sandbox;
 global using System.Linq;
 
-namespace YetiGame;
+namespace YetiEscape;
 
 public partial class YetiEscape : GameManager // To create a game, we have make a new class which derives from the GameManager class
 {
 
 	// We can use static variables from anywhere in the code with YetiEscape.Radius
-	public static float Radius = 512f; // How big the Lake is, the Yeti will follow the circumference of an imaginary circle around it and the player will escape when reaching this distance
+	public static float Radius = 512f;	// How big the Lake is, the Yeti will follow the circumference of an imaginary circle around it and the player will escape when reaching this distance
+
+	public YetiEscape() // This is the constructor, every class has one and it runs the code when created on both server and client.
+	{
+
+		if ( Game.IsClient )	// Run the code only if it's the client, we do this for most UI elements
+			new Hud();			// Create a new Hud instance. Hud is a partial class that was created automatically by the compiler from our Hud.razor file and is our rootpanel
+
+	}
 
 	public override void ClientJoined( IClient client ) // Whenever a client joins, run this code and pass the client variable
 	{
@@ -32,6 +40,20 @@ public partial class YetiEscape : GameManager // To create a game, we have make 
 		var spawnPoint = SpawnPoint.All.First();	// Find the first available SpawnPoint, this is the info_player_start we placed in Hammer
 		pawn.Position = spawnPoint.Position;		// Set the player's position to the spawnpoint's position
 
+	}
+
+	public static void DisplayText( IClient client, string text )
+	{
+
+		if ( client.Pawn is not SwimmingPlayer player ) return;
+
+		player.GameText = text;
+
+		GameTask.RunInThreadAsync( async () =>
+		{
+			await GameTask.DelaySeconds( 1f );
+			player.GameText = "";
+		} );
 	}
 
 }

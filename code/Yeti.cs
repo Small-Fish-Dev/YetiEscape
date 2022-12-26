@@ -1,4 +1,4 @@
-﻿namespace YetiGame;
+﻿namespace YetiEscape;
 
 public partial class Yeti : AnimatedEntity
 {
@@ -21,7 +21,7 @@ public partial class Yeti : AnimatedEntity
 
 	// When we're dealing with a value such as UnitsPerSecond (Velocity) we multiply it by Time.Delta (Time passed since the last tick) when calculating every tick
 
-	[Event.Tick.Server] // Call this method every tick on the server, we can't set the position of an entity on the client if we want other players to see the change
+	[Event.Tick.Server] // Call this method every tick
 	public void ComputeAI()
 	{
 
@@ -51,8 +51,13 @@ public partial class Yeti : AnimatedEntity
 
 		// GAMEPLAY //
 
-		if ( Position.Distance( Target.Position ) < 30f )	// If the distance between the yeti and the target's position is less than 30 units then...
-			YetiEscape.Reset( Target.Client );				// Call the game's static method Reset on the target's client
+		if ( Position.Distance( Target.Position ) < 30f )   // If the distance between the yeti and the target's position is less than 30 units then...
+		{
+
+			YetiEscape.Reset( Target.Client );              // Call the game's static method Reset on the target's client
+			YetiEscape.DisplayText( Target.Client, "YOU LOSE" );
+
+		}
 
 	}
 
