@@ -1,6 +1,6 @@
 ﻿namespace YetiGame;
 
-partial class Yeti : AnimatedEntity
+public partial class Yeti : AnimatedEntity
 {
 
 	public SwimmingPlayer Target;	// This is who the Yeti will follow, we'll set it once a player joins
@@ -34,6 +34,7 @@ partial class Yeti : AnimatedEntity
 		Rotation currentRotation = Rotation.LookAt( Position );				// Rotation from the center to the Yeti's position
 		Rotation wishRotation = Rotation.LookAt( Target.Position );			// Rotation from the center to the Target's position
 
+		// TODO: Simplify this in the future, just distance / time.delta or something, too complex for beginners
 		float distance = currentRotation.Distance( wishRotation );							// How many degrees are between the Yeti and the Target's rotation
 		float deltaAngle = MathX.RadianToDegree( Target.Speed / Radius ) * Time.Delta;		// Ratio between the Target's max speed and the lake's radius
 		float yetiSpeed = deltaAngle * SpeedRatio;											// Yeti's angular velocity around the lake
@@ -43,7 +44,7 @@ partial class Yeti : AnimatedEntity
 		Vector3 newPosition = newRotation.Forward * Radius;		// Position forms a circle around the rotation with the lake's radius
 		Velocity = newPosition - Position;						// Calculate the velocity to also use in the Animation
 
-		if ( !Velocity.IsNearlyZero() ) // Don't run this code if the Yeti is basically standing still
+		if ( !Velocity.IsNearlyZero( 0.1f ) ) // Don't run this code if the Yeti is basically standing still
 		{
 
 			Rotation = Rotation.Lerp( Rotation, Rotation.LookAt( Velocity ), Time.Delta * 10f ); // Rotate the Yeti towards it's Velocity's direction, but smoothly
@@ -56,6 +57,15 @@ partial class Yeti : AnimatedEntity
 
 		var animationHelper = new CitizenAnimationHelper( this );	// If you're using a Citizen as the model, this handles all the animation parameters for us
 		animationHelper.WithVelocity( Velocity / Time.Delta );		// Set the running speed to the current velocity, since the value requires a UnitsPerSecond value we divide instead
+
+		// GAMEPLAY //
+
+		if ( Position.Distance( Target.Position ) < 30f )
+		{
+
+			YetiEscape.Reset( Target.Client );
+
+		}
 
 	}
 
