@@ -26,11 +26,7 @@ public partial class YetiEscape : GameManager
 	public static void Reset( IClient client )
 	{
 
-		if ( client.Pawn is SwimmingPlayer currentPawn ) // Useful way to check if it exists and to type match it, we can now use currentPawn
-		{
-			currentPawn.Delete();
-			currentPawn.Yeti.Delete();
-		}
+		client.Pawn?.Delete(); // If this client's pawn exists, meaning it has already been assigned one, it will delete it
 
 		var pawn = new SwimmingPlayer();
 		client.Pawn = pawn;
@@ -39,7 +35,6 @@ public partial class YetiEscape : GameManager
 		pawn.Clothing.DressEntity( pawn );
 
 		pawn.Position = Entity.All.OfType<SpawnPoint>().FirstOrDefault().Position;
-		pawn.Yeti = new Yeti { Target = pawn };
 
 	}
 
