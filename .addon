@@ -1,7 +1,7 @@
 {
   "Title": "yetigametest",
   "Type": "game",
-  "Org": "local",
+  "Org": "fish",
   "Ident": "yetigametest",
   "Tags": "",
   "Schema": 1,
@@ -21,6 +21,9 @@
     "RankType": "None",
     "PerMapRanking": false,
     "LeaderboardType": "None",
-    "ProjectTemplate": null
+    "ProjectTemplate": null,
+    "Summary": "",
+    "Description": "",
+    "Public": false
   }
 }

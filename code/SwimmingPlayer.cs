@@ -53,6 +53,7 @@ public partial class SwimmingPlayer : AnimatedEntity
 
 		Camera.Position = Vector3.Up * 1000f;			// Place the game's camera in the sky
 		Camera.Rotation = Rotation.FromPitch( 90f );    // Rotate the game's camera downwards
+		Camera.FieldOfView = 100f;
 
 	}
 
