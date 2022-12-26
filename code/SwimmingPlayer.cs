@@ -4,7 +4,6 @@ public partial class SwimmingPlayer : AnimatedEntity
 {
 
 	public Yeti Yeti;
-	public ClothingContainer Clothing = new();
 	public float Speed = 200f;
 	[ClientInput] public Vector3 InputDirection { get; set; }
 
