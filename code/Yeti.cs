@@ -5,14 +5,13 @@ public partial class Yeti : AnimatedEntity
 
 	public SwimmingPlayer Target;	// This is who the Yeti will follow, we'll set it once a player joins
 	public float SpeedRatio = 4f;	// How faster the Yeti is compared to the player, anything above PI will make it fast enough to catch up anywhere
-	public float Radius = 512f;	// How big the Lake is, the Yeti will follow the circumference of an imaginary circle around it
-
+	
 	public override void Spawn() // AnimatedEntity has a default method called Spawn(), which runs on the Server once the Yeti has been created, we can override it to run our code
 	{
 
 		SetModel( "models/citizen/citizen.vmdl" );	// Default citizen model
 		Scale = 1.5f;                               // Make the Yeti bigger!
-		Position = Vector3.Forward * Radius;			// Set the starting position somewhere around the lake
+		Position = Vector3.Forward * YetiEscape.Radius;			// Set the starting position somewhere around the lake
 		EnableDrawing = false;						// We'll "Dress" our citizen as a Yeti, so hide the model, this is usually handled by the clothing asset but we're not using that
 
 		var kongCostume = new AnimatedEntity( "models/kong/kong.vmdl" );	// Create the costume
@@ -35,10 +34,10 @@ public partial class Yeti : AnimatedEntity
 		Rotation wishRotation = Rotation.LookAt( Target.Position, Vector3.Up );		// Rotation from the center to the Target's position
 
 		float distance = currentRotation.Distance( wishRotation );		// How many degrees are between the Yeti and the Target's rotation
-		float angularStep = Time.Delta / distance * 75f;				// The amount to move towards the wishRotation, we don't want it to slow down when it's closer
+		float angularStep = Time.Delta / distance * 90f;				// The amount to move towards the wishRotation, we don't want it to slow down when it's closer
 
 		Rotation newRotation = Rotation.Slerp( currentRotation, wishRotation, angularStep );	// Spherical interpolation between the two rotations
-		Vector3 newPosition = newRotation.Forward * Radius;		// Position forms a circle around the rotation with the lake's radius
+		Vector3 newPosition = newRotation.Forward * YetiEscape.Radius;		// Position forms a circle around the rotation with the lake's radius
 		Velocity = newPosition - Position;                      // Calculate the velocity to also use in the Animation
 		Position += Velocity;                                   // Update the Position using the Yeti's velocity
 
@@ -52,8 +51,8 @@ public partial class Yeti : AnimatedEntity
 
 		// GAMEPLAY //
 
-		if ( Position.Distance( Target.Position ) < 30f )
-			YetiEscape.Reset( Target.Client );
+		if ( Position.Distance( Target.Position ) < 30f )	// If the distance between the yeti and the target's position is less than 30 units then...
+			YetiEscape.Reset( Target.Client );				// Call the game's static method Reset on the target's client
 
 	}
 

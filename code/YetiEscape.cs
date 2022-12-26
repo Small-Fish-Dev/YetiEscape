@@ -6,6 +6,9 @@ namespace YetiGame;
 public partial class YetiEscape : GameManager // To create a game, we have make a new class which derives from the GameManager class
 {
 
+	// We can use static variables from anywhere in the code with YetiEscape.Radius
+	public static float Radius = 512f; // How big the Lake is, the Yeti will follow the circumference of an imaginary circle around it and the player will escape when reaching this distance
+
 	public override void ClientJoined( IClient client ) // Whenever a client joins, run this code and pass the client variable
 	{
 

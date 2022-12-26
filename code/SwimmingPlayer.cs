@@ -23,30 +23,26 @@ public partial class SwimmingPlayer : AnimatedEntity
 
 	}
 
-	public override void Simulate( IClient cl )
+	public override void Simulate( IClient client ) // This is called once every tick, both for client and server. Only entities that have been assigned to a Client's pawn have this
 	{
 
 		// MOVEMENT //
 
-		Vector3 direction = new Vector3( InputDirection.x, InputDirection.y, 0 ).Normal;
-		Vector3 wishSpeed = direction * Speed;
+		Vector3 direction = new Vector3( InputDirection.x, InputDirection.y, 0 ).Normal; // Which direction the player is moving to, we normalize it or else the player moves faster diagonally
+		Vector3 wishVelocity = direction * Speed * Time.Delta;		// Since the direction is normalised, meaning the lenght is always 1, we multiply by the speed
 
-		Velocity = Vector3.Lerp( Velocity, wishSpeed, Time.Delta * 10f );
+		Velocity = Vector3.Lerp( Velocity, wishVelocity, Time.Delta * 10f );    // Smooth the velocity from the current velocity to the new velocity so it doesn't snap
+		Position += Velocity;	// Update the Position using the player's velocity
 
-		if ( Velocity.Length > 0 )
-		{
-
-			Rotation = Rotation.Lerp( Rotation, Rotation.FromYaw( Velocity.EulerAngles.yaw ), Time.Delta * 10f );
-
-		}
-
-		Position += Velocity * Time.Delta;
+		if ( !Velocity.IsNearlyZero( 0.1f ) ) // Don't run this code if the Yeti is basically standing still
+			Rotation = Rotation.Lerp( Rotation, Rotation.LookAt( Velocity ), Time.Delta * 10f ); // Rotate the player towards it's Velocity's direction, but smoothly
 
 		// ANIMATION //
 
-		var animationHelper = new CitizenAnimationHelper( this );
-		animationHelper.WithVelocity( Velocity );
-		animationHelper.IsSwimming = true;
+		var animationHelper = new CitizenAnimationHelper( this );				// CitizenAnimationHelper is useful when handling a Citizen's animations, it sets all the Animation Parameters for us
+		animationHelper.WithVelocity( Velocity / Time.Delta );					// The running animation velocity is in UnitsPerSecond and not UnitsPerTick, so we divide by Time.Delta
+		float distanceFromCenter = Position.Length;								// Since the center of the lake is 0, 0, 0 we can use the magnitude of our player's position as the distance from the center
+		animationHelper.IsSwimming = distanceFromCenter < YetiEscape.Radius;	// If the player is still inside of the lake, then we use the swimming animations
 
 		if ( Game.IsServer ) return;
 
