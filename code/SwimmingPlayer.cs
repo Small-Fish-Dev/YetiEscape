@@ -14,7 +14,7 @@ partial class SwimmingPlayer : AnimatedEntity
 
 	}
 
-	public override void Simulate( Client cl )
+	public override void Simulate( IClient cl )
 	{
 
 		// MOVEMENT //
@@ -22,7 +22,6 @@ partial class SwimmingPlayer : AnimatedEntity
 		Vector3 direction = new Vector3( InputDirection.x, InputDirection.y, 0 ).Normal;
 		Vector3 wishSpeed = direction * Speed;
 
-		Log.Info( $"{Host.Name} - {direction}" );
 		Velocity = Vector3.Lerp( Velocity, wishSpeed, Time.Delta * 10f );
 
 		if ( Velocity.Length > 0 )
@@ -40,13 +39,12 @@ partial class SwimmingPlayer : AnimatedEntity
 		animationHelper.WithVelocity( Velocity );
 		animationHelper.IsSwimming = true;
 
-	}
+		if ( Game.IsServer ) return;
 
-	public override void PostCameraSetup( ref CameraSetup setup )
-	{
+		// CAMERA //
 
-		setup.Position = Vector3.Up * 800f;
-		setup.Rotation = Rotation.FromPitch( 90f );
+		Camera.Position = Vector3.Up * 1000f;
+		Camera.Rotation = Rotation.FromPitch( 90f );
 
 	}
 

@@ -7,14 +7,14 @@ global using System.Threading.Tasks;
 
 namespace YetiGame;
 
-public partial class YetiEscape : Sandbox.Game
+public partial class YetiEscape : GameManager
 {
 
 	public YetiEscape()
 	{
 	}
 
-	public override void ClientJoined( Client client )
+	public override void ClientJoined( IClient client )
 	{
 
 		base.ClientJoined( client );

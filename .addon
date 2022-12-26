@@ -10,7 +10,6 @@
   "ResourcePaths": [],
   "HasCode": true,
   "CodePath": "/code/",
-  "RootNamespace": null,
   "Metadata": {
     "MaxPlayers": 64,
     "MinPlayers": 1,
