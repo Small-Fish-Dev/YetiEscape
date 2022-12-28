@@ -29,6 +29,8 @@ public partial class SwimmingPlayer : AnimatedEntity
 	public override void Simulate( IClient client ) // This is called once every tick, both for client and server. Only entities that have been assigned to a Client's pawn have this
 	{
 
+		if ( !Game.IsServer ) return; // Do not run any of the code below on client, physics and game logic should be handled only on the server
+
 		float distanceFromCenter = Position.Length;	// Since the center of the lake is 0, 0, 0 we can use the magnitude of our player's position as the distance from the center
 		bool isOutOfLake = distanceFromCenter > YetiEscape.Radius;  // Compare the distance from the center to the lake's radius
 
@@ -54,11 +56,14 @@ public partial class SwimmingPlayer : AnimatedEntity
 		if ( isOutOfLake )		// If the player is out of the lake...
 			YetiEscape.DisplayText( Client, "YOU WIN" );	// Display the winning text :-)
 
-		if ( Game.IsServer ) return;	// The code below won't run on the server
+	}
+
+	public override void FrameSimulate( IClient cl ) // This is called once every frame only for the client
+	{
 
 		// CAMERA //
 
-		Camera.Position = Vector3.Up * 1000f;			// Place the game's camera in the sky
+		Camera.Position = Vector3.Up * 1000f;           // Place the game's camera in the sky
 		Camera.Rotation = Rotation.FromPitch( 90f );    // Rotate the game's camera downwards
 		Camera.FieldOfView = 100f;						// Change the FOV so it's the same for everyone
 
